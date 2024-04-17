@@ -16,7 +16,7 @@ exports.addComment = (req, res) => {
 
 exports.getComments = (req, res) => {
     const postId = req.params.postId;
-    const sql = 'SELECT * FROM comments WHERE post_id = ?';
+    const sql = 'SELECT * FROM comments';
 
     db.query(sql, postId, (err, comments) => {
         if (err) {

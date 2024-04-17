@@ -1,4 +1,6 @@
 const express = require('express');
+const swaggerUI = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const bodyParser = require('body-parser');
 const db = require('./db');
 const authRoutes = require('./routes/authRoutes');
@@ -13,6 +15,8 @@ app.use(bodyParser.json());
 app.use('/auth', authRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
