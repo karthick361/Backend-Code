@@ -5,7 +5,8 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 
 router.post('/posts/:postId/comments', authenticateToken, commentController.addComment);
 router.get('/posts/:postId/comments', commentController.getComments);
-
-// Other comment-related routes...
+router.get('/posts/:postId/comments', commentController.getCommentById);
+router.put('/posts/:postId/comments', commentController.updateComment);
+router.delete('/posts/:postId/comments', commentController.deleteComment);
 
 module.exports = router;

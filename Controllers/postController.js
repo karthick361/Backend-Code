@@ -25,4 +25,51 @@ exports.getPosts = (req, res) => {
     });
 };
 
-// Other CRUD operations for posts...
+exports.getPostById = (req, res) => {
+    const postId = req.params.id;
+    const sql = 'SELECT * FROM posts WHERE id = ?';
+
+    db.query(sql, postId, (err, post) => {
+        if (err) {
+            return res.status(500).json({ message: err.message });
+        }
+        if (post.length === 0) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json(post[0]);
+    });
+};
+
+exports.updatePost = (req, res) => {
+    const postId = req.params.id;
+    const { title, content, author } = req.body;
+    const updatedPost = { title, content, author };
+
+    const sql = 'UPDATE posts SET ? WHERE id = ?';
+
+    db.query(sql, [updatedPost, postId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: err.message });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json({ message: 'Post updated successfully!' });
+    });
+};
+
+exports.deletePost = (req, res) => {
+    const postId = req.params.id;
+    const sql = 'DELETE FROM posts WHERE id = ?';
+
+    db.query(sql, postId, (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: err.message });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json({ message: 'Post deleted successfully!' });
+    });
+};
+
