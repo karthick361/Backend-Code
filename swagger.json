@@ -50,7 +50,11 @@
             "type": "string"
           }
         },
-        "required": ["title", "content", "author"]
+        "required": [
+          "title",
+          "content",
+          "author"
+        ]
       },
       "Comment": {
         "type": "object",
@@ -82,7 +86,11 @@
             "type": "string"
           }
         },
-        "required": ["post_id", "content", "author"]
+        "required": [
+          "post_id",
+          "content",
+          "author"
+        ]
       }
     }
   },
@@ -95,7 +103,9 @@
     "/auth/register": {
       "post": {
         "summary": "Register a new user",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -108,9 +118,16 @@
                   },
                   "password": {
                     "type": "string"
+                  },
+                  "email":{
+                    "type":"string"
                   }
                 },
-                "required": ["username", "password"]
+                "required": [
+                  "username",
+                  "password",
+                  "email"
+                ]
               }
             }
           }
@@ -128,7 +145,9 @@
     "/auth/login": {
       "post": {
         "summary": "Log in user",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -143,7 +162,10 @@
                     "type": "string"
                   }
                 },
-                "required": ["username", "password"]
+                "required": [
+                  "username",
+                  "password"
+                ]
               }
             }
           }
@@ -158,10 +180,12 @@
         }
       }
     },
-    "/auth/profile": {
+    "/auth/getUser": {
       "get": {
-        "summary": "Get user profile",
-        "tags": ["Auth"],
+        "summary": "Get user Details",
+        "tags": [
+          "Auth"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -177,10 +201,54 @@
         }
       }
     },
-    "/posts": {
+    "/auth/updateUser": {
+      "put": {
+        "summary": "update user Details",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/deleteUser": {
+      "delete": {
+        "summary": "Delete user Details",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/posts/getPosts": {
       "get": {
         "summary": "Get all posts",
-        "tags": ["Posts"],
+        "tags": [
+          "Posts"
+        ],
         "responses": {
           "200": {
             "description": "List of posts retrieved successfully",
@@ -199,131 +267,147 @@
             "description": "Internal server error"
           }
         }
-      },
-      "post": {
-        "summary": "Create a new post",
-        "tags": ["Posts"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PostInput"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Post created successfully"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
       }
     },
-    "/posts/{id}": {
-      "get": {
-        "summary": "Get a post by ID",
-        "tags": ["Posts"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
+      "/posts/createPost": {
+        "post": {
+          "summary": "Create a new post",
+          "tags": [
+            "Posts"
+          ],
+          "requestBody": {
             "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "ID of the post"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Post retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Post"
+                  "$ref": "#/components/schemas/PostInput"
                 }
               }
             }
           },
-          "404": {
-            "description": "Post not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a post by ID",
-        "tags": ["Posts"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
+          "responses": {
+            "200": {
+              "description": "Post created successfully"
             },
-            "description": "ID of the post"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PostInput"
-              }
+            "500": {
+              "description": "Internal server error"
             }
           }
-        },
-        "responses": {
-          "200": {
-            "description": "Post updated successfully"
-          },
-          "404": {
-            "description": "Post not found"
-          },
-          "500": {
-            "description": "Internal server error"
+        }
+      },
+      "/posts/getPostById": {
+        "get": {
+          "summary": "Get a post by ID",
+          "tags": [
+            "Posts"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the post"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Post retrieved successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Post"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Post not found"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
           }
         }
       },
-      "delete": {
-        "summary": "Delete a post by ID",
-        "tags": ["Posts"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
+      "/posts/updatePost": {
+        "put": {
+          "summary": "Update a post by ID",
+          "tags": [
+            "Posts"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the post"
+            }
+          ],
+          "requestBody": {
             "required": true,
-            "schema": {
-              "type": "integer"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Post updated successfully"
             },
-            "description": "ID of the post"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Post deleted successfully"
-          },
-          "404": {
-            "description": "Post not found"
-          },
-          "500": {
-            "description": "Internal server error"
+            "404": {
+              "description": "Post not found"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
           }
         }
-      }
-    },
-    "/comments": {
+      },
+      "/posts/deletePost": {
+        "delete": {
+          "summary": "Delete a post by ID",
+          "tags": [
+            "Posts"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the post"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Post deleted successfully"
+            },
+            "404": {
+              "description": "Post not found"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+    "/comments/addComment": {
       "post": {
         "summary": "Add a comment to a post",
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -342,10 +426,14 @@
             "description": "Internal server error"
           }
         }
-      },
+      }
+    },
+    "/comments/getComments": {
       "get": {
         "summary": "Get all Comments",
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "responses": {
           "200": {
             "description": "List of Comments retrieved successfully",
@@ -369,10 +457,12 @@
         }
       }
     },
-    "/comments/{id}": {
+    "/comments/getCommentById": {
       "get": {
         "summary": "Get a comment by ID",
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -402,10 +492,14 @@
             "description": "Internal server error"
           }
         }
-      },
+      }
+    },
+    "/comments/updateComment": {
       "put": {
         "summary": "Update a comment by ID",
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -438,10 +532,14 @@
             "description": "Internal server error"
           }
         }
-      },
+      }
+    },
+    "/comments/deleteComment": {
       "delete": {
         "summary": "Delete a comment by ID",
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "parameters": [
           {
             "name": "id",

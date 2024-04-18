@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 const swaggerUI = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 const bodyParser = require('body-parser');
@@ -11,6 +13,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(bodyParser.json());
+const corsOptions = {
+    origin: ['http://localhost:4000'], // Add your allowed origins here
+  };
+  app.use(cors(corsOptions));
 
 app.use('/auth', authRoutes);
 app.use('/posts', postRoutes);

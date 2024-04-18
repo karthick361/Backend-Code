@@ -1,9 +1,12 @@
 const mysql = require('mysql2');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const db = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"Cloudshare@2023",
+    password:process.env.DB_PASSWORD,
     database:"social_data"
 });
 
