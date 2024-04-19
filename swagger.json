@@ -20,6 +20,42 @@
       }
     },
     "schemas": {
+      "User":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password",
+          "email"
+        ]
+      },
       "Post": {
         "type": "object",
         "properties": {
@@ -180,7 +216,7 @@
         }
       }
     },
-    "/auth/getUser": {
+    "/auth/getUsers": {
       "get": {
         "summary": "Get user Details",
         "tags": [
@@ -201,44 +237,72 @@
         }
       }
     },
-    "/auth/updateUser": {
+    "/auth/updateUser":  {
       "put": {
-        "summary": "update user Details",
+        "summary":  "update user Details",
         "tags": [
           "Auth"
         ],
-        "security": [
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the user"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "User profile retrieved successfully"
+            "description": "User updated successfully"
           },
-          "401": {
-            "description": "Unauthorized"
+          "404": {
+            "description": "user not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
     },
-    "/auth/deleteUser": {
+    "/auth/deleteUser":  {
       "delete": {
-        "summary": "Delete user Details",
+        "summary":  "delete user Details",
         "tags": [
           "Auth"
         ],
-        "security": [
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the user"
           }
         ],
         "responses": {
           "200": {
-            "description": "User profile retrieved successfully"
+            "description": "user deleted successfully"
           },
-          "401": {
-            "description": "Unauthorized"
+          "404": {
+            "description": "user not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }

@@ -26,7 +26,7 @@ exports.register = (req, res) => {
     });
 };
 
-exports.getUser = (req, res) => {
+exports.getUsers = (req, res) => {
     const userId = req.params.id;
     const sql = 'SELECT * FROM users';
     db.query(sql, userId, (err, result) => {
@@ -36,7 +36,7 @@ exports.getUser = (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json({ user: result[0] });
+        res.json({ user: result });
     });
 };
 
