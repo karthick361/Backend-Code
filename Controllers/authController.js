@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 exports.login = (req, res) => {
     const { username, password } = req.body;
