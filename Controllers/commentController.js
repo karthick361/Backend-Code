@@ -22,6 +22,9 @@ exports.getComments = (req, res) => {
         if (err) {
             return res.status(500).json({ message: err.message });
         }
+        if (comments.length === 0) {
+            return res.status(404).json({ message: 'Comments not found' });
+        }
         res.json(comments);
     });
 };

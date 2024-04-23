@@ -13,7 +13,7 @@ exports.login = (req, res) => {
         if (err || !results.length || results[0].password !== password) {
             return res.status(401).json({ message: 'Invalid credentials!' });
         }
-        const accessToken = jwt.sign({ username: results[0].username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+        const accessToken = jwt.sign({ username: results[0].username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1hr' });
         res.json({ token: accessToken });
     });
 };
@@ -57,7 +57,7 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
     const userId = req.params.id;
     const sql = 'DELETE FROM users WHERE id = ?';
-    db.query(sql, userId, (err, result) => {
+    db.query(sql, [userId], (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Failed to delete user', error: err.message });
         }

@@ -10,7 +10,14 @@ exports.authenticateToken = (req, res, next) => {
         return res.status(401).json({ message: 'Token is missing!' });
     }
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    const tokenParts = token.split(' ');
+    if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+        console.error('Invalid token format');
+        return res.status(401).json({ message: 'Invalid token format' });
+    }
+    const accessToken = tokenParts[1];
+
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) {
             console.error('Invalid token:', err.message);
             return res.status(403).json({ message: 'Invalid token!' });
